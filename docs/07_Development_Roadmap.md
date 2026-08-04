@@ -30,12 +30,13 @@ The goal is to finish one useful part at a time. Each stage should work before t
 
 ### Work
 
-- [ ] Create account
-- [ ] Sign in and sign out
-- [ ] Create a band
-- [ ] Edit band information
-- [ ] Add and edit members
-- [ ] Check band permissions
+- [x] Create account
+- [x] Sign in and sign out
+- [x] Create a band
+- [x] Complete and edit the band questionnaire
+- [x] Edit band information
+- [x] Add and edit members
+- [x] Check band permissions
 
 ### Ready When
 
@@ -47,29 +48,33 @@ The goal is to finish one useful part at a time. Each stage should work before t
 
 ### Work
 
-- [ ] Add and edit songs
-- [ ] Show the song list
-- [ ] Update song progress
-- [ ] Add problem notes
-- [ ] Mark songs as learning, practising, or ready
-- [ ] Archive songs without removing old history
+- [x] Add songs
+- [x] Edit songs
+- [x] Show the song list
+- [x] Update song progress with five named levels
+- [x] Add problem notes
+- [x] Mark songs as learning, practising, or ready
+- [x] Archive songs without removing old history
 
 ### Ready When
 
 - A band can manage all songs from one page.
-- Progress values are always between 0 and 100.
+- Progress always uses one of the five named levels and never asks for a percentage.
 - Song changes are saved correctly.
 
 ## Stage 3 — Rehearsals
 
 ### Work
 
-- [ ] Create and edit rehearsals
-- [ ] Record date, time, place, and length
-- [ ] Add songs and goals
-- [ ] Record member availability
-- [ ] Show upcoming and past rehearsals
-- [ ] Mark a rehearsal as completed or cancelled
+- [x] Create rehearsals
+- [x] Edit rehearsals
+- [x] Record date, time, place, and length
+- [x] Add rehearsal goals
+- [x] Choose songs before the rehearsal
+- [x] Record member availability
+- [x] Show saved rehearsals
+- [x] Mark a rehearsal as completed after its survey
+- [x] Cancel a rehearsal
 
 ### Ready When
 
@@ -77,20 +82,25 @@ The goal is to finish one useful part at a time. Each stage should work before t
 - Members can record whether they are free.
 - The rehearsal shows its songs, goals, and availability.
 
-## Stage 4 — Feedback
+## Stage 4 — Post-Rehearsal Survey and Feedback
 
 ### Work
 
-- [ ] Add feedback to a rehearsal
-- [ ] Link feedback to a song
-- [ ] Add problem types and notes
-- [ ] Update song progress after a rehearsal
-- [ ] Show feedback history
-- [ ] Filter feedback by song or problem type
+- [x] Open a survey for a saved rehearsal
+- [x] Add an overall rating and record whether goals were met
+- [x] Select the songs that were practised
+- [x] Review every selected song separately
+- [x] Add song ratings, problem types, and notes
+- [x] Update the five-level song progress and status after a rehearsal
+- [x] Edit a saved rehearsal survey
+- [x] Let band members view the saved survey
+- [x] Show feedback history
+- [x] Filter feedback by song or problem type
 
 ### Ready When
 
-- A band can finish a rehearsal and save useful notes.
+- A band can finish a rehearsal and save an overall result.
+- Each practised song has its own saved review.
 - Old feedback can be found later.
 - Song progress can change after each rehearsal.
 
@@ -154,7 +164,7 @@ The goal is to finish one useful part at a time. Each stage should work before t
 - [ ] Watch how they complete the main flow
 - [ ] Record confusing steps and missing features
 - [ ] Fix important bugs
-- [ ] Improve the AI prompt using real feedback
+- [ ] Improve the AI prompt using real survey results
 - [ ] Check that private data is protected
 
 ### Questions to Ask
@@ -162,7 +172,7 @@ The goal is to finish one useful part at a time. Each stage should work before t
 - Was it easy to create the band and add songs?
 - Did the app save time when planning a rehearsal?
 - Was the AI plan useful and clear?
-- Did the band continue to record feedback?
+- Did the band continue to complete post-rehearsal surveys?
 - What part of the app was confusing?
 
 ### Ready When
@@ -176,7 +186,7 @@ The goal is to finish one useful part at a time. Each stage should work before t
 | Version | Main Result |
 |---|---|
 | 0.1 | Accounts, bands, members, and songs |
-| 0.2 | Rehearsals, availability, and feedback |
+| 0.2 | Rehearsals, availability, and song-by-song surveys |
 | 0.3 | AI rehearsal plans and summaries |
 | 0.4 | Performance planning |
 | 1.0 | Tested and polished first complete version |

@@ -130,10 +130,11 @@ The backend should send only useful data, such as:
 
 - Rehearsal date and length
 - Member availability
-- Song names and progress
+- Song names and one of the five named progress levels
 - Song problem notes
 - Recent rehearsal feedback
 - Upcoming performance date
+- Band genres, experience, goals, rehearsal habits, and current challenge from the questionnaire
 
 Passwords, email addresses, and other private data should not be sent to the AI when they are not needed.
 
@@ -161,7 +162,10 @@ The backend must check the output before sending it to the frontend.
 
 ## Sign-In and Safety
 
-- Passwords must be protected before they are saved.
+- Passwords are protected with PHP password hashing before they are saved.
+- PHP sessions use an `HttpOnly`, `SameSite=Lax` cookie.
+- Login and registration replace the session ID before private data is loaded.
+- Requests that change private data include a session CSRF token.
 - API keys must be stored in environment variables, not in code.
 - Every private request must check the signed-in user.
 - The backend must check that the user belongs to the requested band.

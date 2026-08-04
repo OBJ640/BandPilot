@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="BandPilot helps bands plan rehearsals, track songs, and prepare for performances.">
+  <title>BandPilot — Keep the band moving</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <section class="auth-screen" id="authScreen" aria-labelledby="authTitle">
+    <div class="auth-showcase">
+      <a class="brand auth-brand" href="#" aria-label="BandPilot">
+        <span class="brand-mark" aria-hidden="true">BP</span>
+        <span>BandPilot</span>
+      </a>
+      <div class="auth-showcase-copy">
+        <p class="eyebrow">YOUR BAND · ONE PLACE</p>
+        <h1>Keep every rehearsal moving forward.</h1>
+        <p>Plan together, track every song, and turn your band data into useful next steps.</p>
+      </div>
+      <div class="auth-note"><span>✦</span><p><strong>One focused workspace</strong><small>Songs, rehearsals, performances, and AI suggestions stay connected.</small></p></div>
+    </div>
+    <div class="auth-panel">
+      <div class="auth-card">
+        <p class="eyebrow">WELCOME TO BANDPILOT</p>
+        <h2 id="authTitle">Sign in to your band</h2>
+        <div class="auth-tabs" role="tablist" aria-label="Account options">
+          <button class="is-active" type="button" data-auth-mode="login" role="tab" aria-selected="true">Sign in</button>
+          <button type="button" data-auth-mode="register" role="tab" aria-selected="false">Create account</button>
+        </div>
+
+        <form class="auth-form" id="loginForm">
+          <label>Email<input name="email" type="email" autocomplete="email" required placeholder="you@example.com"></label>
+          <label>Password<input name="password" type="password" autocomplete="current-password" required minlength="8" maxlength="128" placeholder="Your password"></label>
+          <p class="form-message" id="loginFormMessage" role="status"></p>
+          <button class="button button-dark auth-submit" type="submit">Sign in</button>
+          <button class="demo-login" id="useDemoButton" type="button">Use demo account</button>
+          <p class="demo-hint">Demo: demo@bandpilot.local · BandPilot123!</p>
+        </form>
+
+        <form class="auth-form is-hidden" id="registerForm">
+          <label>Your name<input name="name" autocomplete="name" required maxlength="120" placeholder="How should the band know you?"></label>
+          <label>Email<input name="email" type="email" autocomplete="email" required maxlength="190" placeholder="you@example.com"></label>
+          <label>Password<input name="password" type="password" autocomplete="new-password" required minlength="8" maxlength="128" placeholder="At least 8 characters"></label>
+          <label>Confirm password<input name="password_confirmation" type="password" autocomplete="new-password" required minlength="8" maxlength="128" placeholder="Enter it again"></label>
+          <p class="form-message" id="registerFormMessage" role="status"></p>
+          <button class="button button-dark auth-submit" type="submit">Create account</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div class="app-shell is-hidden" id="appShell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#overview" aria-label="BandPilot home">
+        <span class="brand-mark" aria-hidden="true">BP</span>
+        <span>BandPilot</span>
+      </a>
+
+      <div class="band-switcher">
+        <span class="band-avatar" id="bandAvatarDisplay">NB</span>
+        <span>
+          <strong id="bandNameDisplay">Neon Birds</strong>
+          <small id="bandDescriptionDisplay">Student band</small>
+        </span>
+        <button id="changeBandButton" type="button" aria-label="Change band">⌄</button>
+      </div>
+
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-item is-active" type="button" data-view="overview">
+          <span aria-hidden="true">⌂</span> Overview
+        </button>
+        <button class="nav-item" type="button" data-view="songs">
+          <span aria-hidden="true">♫</span> Songs
+        </button>
+        <button class="nav-item" type="button" data-view="rehearsals">
+          <span aria-hidden="true">◷</span> Rehearsals
+        </button>
+        <button class="nav-item" type="button" data-view="performances">
+          <span aria-hidden="true">★</span> Performances
+        </button>
+        <button class="nav-item" type="button" data-view="assistant">
+          <span aria-hidden="true">✦</span> AI Assistant
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="setup-card">
+          <span class="setup-label">Band questionnaire</span>
+          <strong id="setupProgressText">Not started</strong>
+          <div class="setup-track"><span id="setupProgressBar"></span></div>
+          <button id="finishSetupButton" type="button">Complete questionnaire →</button>
+        </div>
+        <button class="profile-row" id="profileButton" type="button">
+          <span class="profile-avatar" id="profileAvatarDisplay">RY</span>
+          <span><strong id="profileNameDisplay">Ricky</strong><small id="profileRoleDisplay">Band owner</small></span>
+          <span aria-hidden="true">···</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="menu-button" id="menuButton" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
+        <div>
+          <p class="eyebrow">Tuesday, August 4</p>
+          <h1 id="pageTitle">Good morning, Ricky.</h1>
+        </div>
+        <div class="topbar-actions">
+          <span class="api-status" id="apiStatus"><i></i> Checking system</span>
+          <button class="icon-button" id="notificationsButton" type="button" aria-label="Notifications">●</button>
+          <button class="button button-dark" type="button" data-action="new-rehearsal">+ New rehearsal</button>
+        </div>
+      </header>
+
+      <section class="view is-active" id="overviewView" data-page="overview">
+        <article class="hero-card">
+          <div class="hero-copy">
+            <p class="hero-kicker">NEXT REHEARSAL · IN 3 DAYS</p>
+            <h2>Saturday, 2:00 PM</h2>
+            <p>School music room · 2 hours · 4 of 5 members available</p>
+            <div class="hero-actions">
+              <button class="button button-light" type="button" data-view-link="rehearsals">View rehearsal</button>
+              <button class="button button-ghost-light" type="button" data-view-link="assistant">✦ Review AI plan</button>
+            </div>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="vinyl vinyl-one"></div>
+            <div class="vinyl vinyl-two"></div>
+            <span class="hero-number">03</span>
+          </div>
+        </article>
+
+        <div class="stat-grid" id="statGrid">
+          <article class="stat-card"><span>Songs in progress</span><strong>8</strong><small>3 need attention</small></article>
+          <article class="stat-card"><span>Rehearsals this month</span><strong>4</strong><small>12 total hours</small></article>
+          <article class="stat-card"><span>Next performance</span><strong>20d</strong><small>Campus Music Night</small></article>
+          <article class="stat-card"><span>Band readiness</span><strong>On track</strong><small>3 songs are nearly ready</small></article>
+        </div>
+
+        <div class="content-grid">
+          <article class="panel priority-panel">
+            <div class="panel-heading">
+              <div><p class="eyebrow">THIS WEEK</p><h3>Practice priorities</h3></div>
+              <button class="text-button" type="button" data-view-link="songs">View all →</button>
+            </div>
+            <div class="priority-list" id="priorityList">
+              <div class="priority-row">
+                <span class="priority-rank priority-high">1</span>
+                <div><strong>Little Wing</strong><small>Chorus entry · timing</small></div>
+                <div class="progress-wrap"><small>Can rehearse together</small></div>
+              </div>
+              <div class="priority-row">
+                <span class="priority-rank priority-mid">2</span>
+                <div><strong>Everlong</strong><small>Bridge · dynamics</small></div>
+                <div class="progress-wrap"><small>Almost finished</small></div>
+              </div>
+              <div class="priority-row">
+                <span class="priority-rank priority-low">3</span>
+                <div><strong>Dreams</strong><small>Full song · balance</small></div>
+                <div class="progress-wrap"><small>Almost finished</small></div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel availability-panel">
+            <div class="panel-heading">
+              <div><p class="eyebrow">SATURDAY</p><h3>Member availability</h3></div>
+              <span class="status-pill">4 / 5 ready</span>
+            </div>
+            <div class="member-stack" aria-label="Available members">
+              <span class="member member-a">RY</span><span class="member member-b">AM</span>
+              <span class="member member-c">JT</span><span class="member member-d">SL</span>
+              <span class="member member-away">MK</span>
+            </div>
+            <div class="availability-note">
+              <span aria-hidden="true">✓</span>
+              <p><strong>Best time confirmed</strong><br><small>Saturday from 2:00 PM to 4:00 PM</small></p>
+            </div>
+          </article>
+        </div>
+
+        <article class="ai-banner">
+          <span class="ai-symbol" aria-hidden="true">✦</span>
+          <div>
+            <p class="eyebrow">BANDPILOT INSIGHT</p>
+            <h3>Your chorus timing has appeared in 3 recent rehearsals.</h3>
+            <p>Try a 15-minute section practice at a slower tempo before playing the full song.</p>
+          </div>
+          <button class="button button-dark" type="button" data-view-link="assistant">Open assistant</button>
+        </article>
+      </section>
+
+      <section class="view" id="songsView" data-page="songs">
+        <div class="section-heading">
+          <div><p class="eyebrow">YOUR MUSIC</p><h2>Song progress</h2><p>Keep every song moving toward performance-ready.</p></div>
+          <button class="button button-dark" id="addSongButton" type="button">+ Add song</button>
+        </div>
+        <div class="filter-row">
+          <button class="filter-chip is-active" type="button" data-song-filter="all">All songs</button>
+          <button class="filter-chip" type="button" data-song-filter="needs-work">Needs work</button>
+          <button class="filter-chip" type="button" data-song-filter="ready">Ready</button>
+        </div>
+        <div class="song-grid" id="songGrid"></div>
+      </section>
+
+      <section class="view" id="rehearsalsView" data-page="rehearsals">
+        <div class="section-heading">
+          <div><p class="eyebrow">PRACTICE TOGETHER</p><h2>Rehearsals</h2><p>Plan the next session and remember what happened.</p></div>
+          <div class="section-actions"><button class="button button-outline" id="reviewHistoryButton" type="button">Survey history</button><button class="button button-dark" type="button" data-action="new-rehearsal">+ New rehearsal</button></div>
+        </div>
+        <div class="filter-row" id="rehearsalFilters">
+          <button class="filter-chip is-active" type="button" data-rehearsal-filter="all">All</button>
+          <button class="filter-chip" type="button" data-rehearsal-filter="upcoming">Upcoming</button>
+          <button class="filter-chip" type="button" data-rehearsal-filter="completed">Completed</button>
+          <button class="filter-chip" type="button" data-rehearsal-filter="reviewed">With survey</button>
+          <button class="filter-chip" type="button" data-rehearsal-filter="cancelled">Cancelled</button>
+        </div>
+        <div class="timeline" id="rehearsalTimeline"></div>
+      </section>
+
+      <section class="view" id="performancesView" data-page="performances">
+        <div class="section-heading">
+          <div><p class="eyebrow">UPCOMING SHOW</p><h2>Campus Music Night</h2><p>Twenty days to get the band stage-ready.</p></div>
+          <button class="button button-dark" id="addPerformanceButton" type="button">+ Add performance</button>
+        </div>
+        <div class="performance-grid">
+          <article class="panel performance-main">
+            <p class="eyebrow">AUGUST 24 · SCHOOL HALL</p>
+            <h3>30-minute set · 5 songs</h3>
+            <div class="setlist">
+              <span><b>01</b> Dreams <small>4:20</small></span>
+              <span><b>02</b> Little Wing <small>5:10</small></span>
+              <span><b>03</b> Everlong <small>4:45</small></span>
+            </div>
+            <button class="button button-outline" id="editSetlistButton" type="button">Edit setlist</button>
+          </article>
+          <article class="panel checklist-panel">
+            <div class="panel-heading"><h3>Equipment</h3><span>3 / 5</span></div>
+            <label><input type="checkbox" data-checklist-key="guitar-amplifiers" checked> Guitar amplifiers</label>
+            <label><input type="checkbox" data-checklist-key="drum-hardware" checked> Drum hardware</label>
+            <label><input type="checkbox" data-checklist-key="instrument-cables" checked> Instrument cables</label>
+            <label><input type="checkbox" data-checklist-key="spare-strings"> Spare strings</label>
+            <label><input type="checkbox" data-checklist-key="power-extensions"> Power extensions</label>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="assistantView" data-page="assistant">
+        <div class="assistant-layout">
+          <div class="assistant-intro">
+            <span class="assistant-orb">✦</span>
+            <p class="eyebrow">ONE AI · YOUR BAND DATA</p>
+            <h2>What should we practise next?</h2>
+            <p>BandPilot uses your song progress, availability, deadlines, and past feedback to make a practical plan.</p>
+            <div class="suggestion-list">
+              <button type="button" data-ai-suggestion="rehearsal">Plan Saturday's rehearsal <span>→</span></button>
+              <button type="button" data-ai-suggestion="summary">Summarize our recent problems <span>→</span></button>
+              <button type="button" data-ai-suggestion="performance">Check performance readiness <span>→</span></button>
+            </div>
+          </div>
+          <article class="assistant-result" id="assistantResult">
+            <div class="result-top"><span id="resultType">Draft rehearsal plan</span><span class="status-pill" id="resultStatus">Review before saving</span></div>
+            <h3>Saturday · 120 minutes</h3>
+            <ol>
+              <li><span>15 min</span><div><strong>Warm-up together</strong><p>Focus on shared tempo and clear count-ins.</p></div></li>
+              <li><span>30 min</span><div><strong>Little Wing chorus</strong><p>Start slowly, then practise the entry five times.</p></div></li>
+              <li><span>25 min</span><div><strong>Everlong bridge</strong><p>Work on dynamics before playing the full song.</p></div></li>
+              <li><span>35 min</span><div><strong>Full set run</strong><p>Play without stopping and record new feedback.</p></div></li>
+              <li><span>15 min</span><div><strong>Review and next steps</strong><p>Update song progress before leaving.</p></div></li>
+            </ol>
+            <div class="result-actions">
+              <button class="button button-outline" id="editPlanButton" type="button">Edit plan</button>
+              <button class="button button-dark" id="approvePlanButton" type="button">Approve and save</button>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog class="modal" id="songModal">
+    <form id="songForm">
+      <input type="hidden" name="mode" value="create"><input type="hidden" name="song_id">
+      <div class="modal-heading"><div><p class="eyebrow">SONG LIBRARY</p><h2 id="songFormTitle">Add a song</h2></div><button type="button" id="closeSongModal" aria-label="Close">×</button></div>
+      <label>Song title<input name="title" required maxlength="120" placeholder="e.g. Little Wing"></label>
+      <label>Artist<input name="artist" maxlength="120" placeholder="e.g. Jimi Hendrix"></label>
+      <div class="form-row">
+        <label>Progress
+          <select name="progress_level" required>
+            <option value="starting">Just starting</option>
+            <option value="learning">Learning parts</option>
+            <option value="rehearsing">Can rehearse together</option>
+            <option value="polishing">Almost finished</option>
+            <option value="ready">Performance ready</option>
+          </select>
+        </label>
+        <label>Status<select name="status"><option value="learning">Learning</option><option value="practising">Practising</option><option value="ready">Ready</option></select></label>
+      </div>
+      <label>Parts that need work<textarea name="problem_notes" rows="3" placeholder="Add a short note"></textarea></label>
+      <p class="form-message" id="songFormMessage" role="status"></p>
+      <div class="modal-actions modal-actions-split"><button class="button button-danger is-hidden" type="button" id="archiveSongButton">Archive song</button><span></span><button class="button button-outline" type="button" id="cancelSongModal">Cancel</button><button class="button button-dark" type="submit">Save song</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="rehearsalModal">
+    <form id="rehearsalForm">
+      <input type="hidden" name="mode" value="create"><input type="hidden" name="rehearsal_id">
+      <div class="modal-heading"><div><p class="eyebrow">REHEARSAL</p><h2 id="rehearsalFormTitle">Plan a rehearsal</h2></div><button type="button" data-close-dialog="rehearsalModal" aria-label="Close">×</button></div>
+      <label>Title<input name="title" required maxlength="120" value="Full-band rehearsal"></label>
+      <div class="form-row">
+        <label>Date and time<input name="start_time" type="datetime-local" required value="2026-08-08T14:00"></label>
+        <label>Length in minutes<input name="duration_minutes" type="number" min="15" max="480" value="120" required></label>
+      </div>
+      <label>Location<input name="location" maxlength="160" value="School music room"></label>
+      <label>Goals<textarea name="goals" rows="3" placeholder="What should the band achieve?"></textarea></label>
+      <fieldset class="choice-fieldset"><legend>Songs for this rehearsal</legend><div class="compact-choice-grid" id="rehearsalSongPicker"></div></fieldset>
+      <p class="form-message" id="rehearsalFormMessage" role="status"></p>
+      <div class="modal-actions modal-actions-split"><button class="button button-danger is-hidden" type="button" id="cancelRehearsalButton">Cancel rehearsal</button><span></span><button class="button button-outline" type="button" data-close-dialog="rehearsalModal">Close</button><button class="button button-dark" type="submit">Save rehearsal</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="modal rehearsal-review-modal" id="rehearsalReviewModal">
+    <form id="rehearsalReviewForm">
+      <div class="modal-heading">
+        <div><p class="eyebrow">POST-REHEARSAL SURVEY</p><h2 id="rehearsalReviewTitle">Review rehearsal</h2></div>
+        <button type="button" data-close-dialog="rehearsalReviewModal" aria-label="Close">×</button>
+      </div>
+      <p class="review-intro" id="rehearsalReviewIntro">Record the overall result, then review every song separately.</p>
+
+      <section class="review-overall-panel">
+        <p class="eyebrow">OVERALL REHEARSAL</p>
+        <div class="form-row">
+          <label>Overall result
+            <select name="overall_rating" required>
+              <option value="">Choose a rating</option>
+              <option value="1">1 · Needs a reset</option>
+              <option value="2">2 · Difficult session</option>
+              <option value="3">3 · Some progress</option>
+              <option value="4">4 · Good rehearsal</option>
+              <option value="5">5 · Excellent rehearsal</option>
+            </select>
+          </label>
+          <label>Were the goals met?
+            <select name="goals_met" required>
+              <option value="">Choose an answer</option>
+              <option value="yes">Yes</option>
+              <option value="partly">Partly</option>
+              <option value="no">No</option>
+            </select>
+          </label>
+        </div>
+        <label>Overall notes<textarea name="notes" rows="3" maxlength="1000" placeholder="What went well, and what should change next time?"></textarea></label>
+      </section>
+
+      <section class="review-songs-section">
+        <div class="review-section-heading"><div><p class="eyebrow">SONG-BY-SONG</p><h3>Which songs did you practise?</h3></div><span id="reviewSongCount">0 selected</span></div>
+        <div class="review-song-picker" id="reviewSongPicker"></div>
+        <div class="review-song-forms" id="reviewSongForms"></div>
+      </section>
+
+      <p class="form-message" id="rehearsalReviewMessage" role="status"></p>
+      <div class="modal-actions"><button class="button button-outline" type="button" data-close-dialog="rehearsalReviewModal">Cancel</button><button class="button button-dark" type="submit">Save rehearsal survey</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="performanceModal">
+    <form id="performanceForm">
+      <div class="modal-heading"><div><p class="eyebrow">PERFORMANCE</p><h2>Add a performance</h2></div><button type="button" data-close-dialog="performanceModal" aria-label="Close">×</button></div>
+      <label>Performance name<input name="name" required maxlength="120" placeholder="e.g. Campus Music Night"></label>
+      <div class="form-row">
+        <label>Date and time<input name="start_time" type="datetime-local" required></label>
+        <label>Set length in minutes<input name="length_minutes" type="number" min="1" max="300" value="30"></label>
+      </div>
+      <label>Location<input name="location" maxlength="160" placeholder="Where will the band perform?"></label>
+      <label>Notes<textarea name="notes" rows="3" placeholder="Add useful details"></textarea></label>
+      <p class="form-message" id="performanceFormMessage" role="status"></p>
+      <div class="modal-actions"><button class="button button-outline" type="button" data-close-dialog="performanceModal">Cancel</button><button class="button button-dark" type="submit">Save performance</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="setlistModal">
+    <form id="setlistForm">
+      <div class="modal-heading"><div><p class="eyebrow">SETLIST</p><h2>Edit setlist</h2></div><button type="button" data-close-dialog="setlistModal" aria-label="Close">×</button></div>
+      <label>Song 1<input name="song_1" required value="Dreams"></label>
+      <label>Song 2<input name="song_2" required value="Little Wing"></label>
+      <label>Song 3<input name="song_3" required value="Everlong"></label>
+      <div class="modal-actions"><button class="button button-outline" type="button" data-close-dialog="setlistModal">Cancel</button><button class="button button-dark" type="submit">Save setlist</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="bandManagerModal">
+    <div class="info-modal-content">
+      <div class="modal-heading"><div><p class="eyebrow">BANDS</p><h2>Your bands</h2></div><button type="button" data-close-dialog="bandManagerModal" aria-label="Close">×</button></div>
+      <div class="band-list" id="bandList"></div>
+      <p class="form-message" id="bandManagerMessage" role="status"></p>
+      <div class="modal-actions modal-actions-split">
+        <button class="button button-outline" id="createBandButton" type="button">+ Create band</button>
+        <button class="button button-outline" id="manageMembersButton" type="button">Members</button>
+        <button class="button button-outline" id="editBandButton" type="button">Edit current</button>
+        <button class="button button-dark" type="button" data-close-dialog="bandManagerModal">Done</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="modal member-manager-modal" id="memberManagerModal">
+    <div class="info-modal-content">
+      <div class="modal-heading"><div><p class="eyebrow">BAND MEMBERS</p><h2>Manage members</h2></div><button type="button" data-close-dialog="memberManagerModal" aria-label="Close">×</button></div>
+      <div class="member-manager-list" id="memberManagerList"></div>
+      <p class="form-message" id="memberManagerMessage" role="status"></p>
+      <div class="modal-actions"><button class="button button-outline" type="button" data-close-dialog="memberManagerModal">Done</button><button class="button button-dark" id="addMemberButton" type="button">+ Add member</button></div>
+    </div>
+  </dialog>
+
+  <dialog class="modal" id="memberFormModal">
+    <form id="memberForm">
+      <input type="hidden" name="mode" value="create"><input type="hidden" name="member_id">
+      <div class="modal-heading"><div><p class="eyebrow">BAND MEMBER</p><h2 id="memberFormTitle">Add member</h2></div><button type="button" data-close-dialog="memberFormModal" aria-label="Close">×</button></div>
+      <label>Member name<input name="display_name" required maxlength="120"></label>
+      <label>Band role<select name="band_role" data-band-role-select required></select></label>
+      <p class="form-message" id="memberFormMessage" role="status"></p>
+      <div class="modal-actions modal-actions-split"><button class="button button-danger is-hidden" id="removeMemberButton" type="button">Remove member</button><span></span><button class="button button-outline" type="button" data-close-dialog="memberFormModal">Cancel</button><button class="button button-dark" type="submit">Save member</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="bandFormModal">
+    <form id="bandForm">
+      <input type="hidden" name="mode" value="create">
+      <div class="modal-heading"><div><p class="eyebrow">BAND</p><h2 id="bandFormTitle">Create a band</h2></div><button type="button" data-close-dialog="bandFormModal" aria-label="Close">×</button></div>
+      <label>Band name<input name="name" required maxlength="120" placeholder="e.g. Neon Birds"></label>
+      <label>Description<textarea name="description" rows="3" maxlength="500" placeholder="What kind of band is this?"></textarea></label>
+      <p class="form-message" id="bandFormMessage" role="status"></p>
+      <div class="modal-actions"><button class="button button-outline" type="button" data-close-dialog="bandFormModal">Cancel</button><button class="button button-dark" type="submit">Save band</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="profileModal">
+    <form id="profileForm">
+      <div class="modal-heading"><div><p class="eyebrow">PROFILE</p><h2>Edit your profile</h2></div><button type="button" data-close-dialog="profileModal" aria-label="Close">×</button></div>
+      <label>Name<input name="name" required maxlength="120"></label>
+      <label>Email<input name="email" type="email" required maxlength="190"></label>
+      <label>Band role<select name="instrument" data-band-role-select required></select></label>
+      <p class="form-message" id="profileFormMessage" role="status"></p>
+      <div class="modal-actions modal-actions-account"><button class="button button-danger" id="logoutButton" type="button">Sign out</button><span></span><button class="button button-outline" type="button" data-close-dialog="profileModal">Cancel</button><button class="button button-dark" type="submit">Save profile</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="modal questionnaire-modal" id="questionnaireModal">
+    <form id="questionnaireForm">
+      <div class="modal-heading">
+        <div><p class="eyebrow">BAND QUESTIONNAIRE</p><h2 id="questionnaireTitle">Tell us about your band</h2></div>
+        <button type="button" class="questionnaire-close" data-close-dialog="questionnaireModal" aria-label="Close">×</button>
+      </div>
+      <div class="questionnaire-progress" aria-label="Questionnaire progress"><span id="questionnaireProgressBar"></span></div>
+      <p class="questionnaire-step-label" id="questionnaireStepLabel">Step 1 of 3 · Your sound</p>
+
+      <section class="questionnaire-step is-active" data-questionnaire-step="1">
+        <div id="questionnaireBandFields" class="questionnaire-band-fields is-hidden">
+          <label>Band name<input name="band_name" maxlength="120" placeholder="e.g. Neon Birds"></label>
+          <label>Short description<textarea name="band_description" rows="2" maxlength="500" placeholder="What kind of band are you building?"></textarea></label>
+        </div>
+        <label>Your band role<select name="instrument" data-band-role-select required></select></label>
+        <label>Music genres<input name="genres" required maxlength="160" placeholder="Choose 1–3, separated by commas"></label>
+        <label>Band experience
+          <select name="experience_level" required>
+            <option value="">Choose a level</option>
+            <option value="beginner">Mostly beginning</option>
+            <option value="mixed">Mixed experience</option>
+            <option value="intermediate">Mostly intermediate</option>
+            <option value="advanced">Mostly advanced</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="questionnaire-step" data-questionnaire-step="2" hidden>
+        <label>Main goal
+          <select name="main_goal" required>
+            <option value="">Choose the main goal</option>
+            <option value="casual">Play together for fun</option>
+            <option value="performance">Prepare for performances</option>
+            <option value="recording">Record music</option>
+            <option value="competition">Prepare for a competition</option>
+          </select>
+        </label>
+        <label>How often do you rehearse?
+          <select name="rehearsal_frequency" required>
+            <option value="">Choose a frequency</option>
+            <option value="weekly">Every week</option>
+            <option value="twice_month">Twice a month</option>
+            <option value="monthly">Once a month</option>
+            <option value="as_needed">Only when needed</option>
+          </select>
+        </label>
+        <label>Usual rehearsal length
+          <select name="session_minutes" required>
+            <option value="">Choose a length</option>
+            <option value="60">60 minutes</option>
+            <option value="90">90 minutes</option>
+            <option value="120">120 minutes</option>
+            <option value="180">180 minutes</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="questionnaire-step" data-questionnaire-step="3" hidden>
+        <label>Biggest challenge right now
+          <select name="main_challenge" required>
+            <option value="">Choose one challenge</option>
+            <option value="availability">Finding a time for everyone</option>
+            <option value="song_learning">Learning songs efficiently</option>
+            <option value="timing">Playing in time together</option>
+            <option value="teamwork">Communication and teamwork</option>
+            <option value="performance_prep">Preparing for performances</option>
+          </select>
+        </label>
+        <label>Anything else BandPilot should know?<textarea name="notes" rows="4" maxlength="800" placeholder="Optional notes about your goals or workflow"></textarea></label>
+        <div class="questionnaire-summary"><span>✦</span><p><strong>These answers stay with this band.</strong><small>BandPilot can use them to make more useful rehearsal suggestions.</small></p></div>
+      </section>
+
+      <p class="form-message" id="questionnaireFormMessage" role="status"></p>
+      <div class="modal-actions questionnaire-actions">
+        <button class="button button-outline is-hidden" id="questionnaireBackButton" type="button">Back</button>
+        <span></span>
+        <button class="button button-dark" id="questionnaireNextButton" type="button">Next</button>
+        <button class="button button-dark is-hidden" id="saveQuestionnaireButton" type="submit">Save questionnaire</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="modal availability-modal" id="availabilityModal">
+    <form id="availabilityForm">
+      <div class="modal-heading"><div><p class="eyebrow">MEMBER AVAILABILITY</p><h2 id="availabilityTitle">Rehearsal availability</h2></div><button type="button" data-close-dialog="availabilityModal" aria-label="Close">×</button></div>
+      <p class="review-intro" id="availabilityIntro"></p>
+      <div class="availability-form-list" id="availabilityFormList"></div>
+      <p class="form-message" id="availabilityFormMessage" role="status"></p>
+      <div class="modal-actions"><button class="button button-outline" type="button" data-close-dialog="availabilityModal">Close</button><button class="button button-dark" type="submit">Save availability</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="modal rehearsal-review-modal" id="reviewHistoryModal">
+    <div class="info-modal-content">
+      <div class="modal-heading"><div><p class="eyebrow">PAST SURVEYS</p><h2>Survey history</h2></div><button type="button" data-close-dialog="reviewHistoryModal" aria-label="Close">×</button></div>
+      <div class="form-row history-filters"><label>Song<select id="historySongFilter"><option value="all">All songs</option></select></label><label>Problem<select id="historyProblemFilter"><option value="all">All problems</option><option value="none">No main problem</option><option value="rhythm">Rhythm</option><option value="coordination">Coordination</option><option value="technique">Technique</option><option value="tone">Tone</option><option value="memory">Memory</option><option value="other">Other</option></select></label></div>
+      <div class="review-history-list" id="reviewHistoryList"></div>
+      <div class="modal-actions"><button class="button button-dark" type="button" data-close-dialog="reviewHistoryModal">Done</button></div>
+    </div>
+  </dialog>
+
+  <dialog class="modal info-modal" id="infoModal">
+    <div class="info-modal-content">
+      <div class="modal-heading"><div><p class="eyebrow" id="infoEyebrow">BANDPILOT</p><h2 id="infoTitle">Information</h2></div><button type="button" data-close-dialog="infoModal" aria-label="Close">×</button></div>
+      <div id="infoBody"></div>
+      <div class="modal-actions"><button class="button button-dark" type="button" data-close-dialog="infoModal">Done</button></div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="/assets/js/app.js" defer></script>
+</body>
+</html>

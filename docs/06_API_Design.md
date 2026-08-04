@@ -28,7 +28,9 @@ Example error:
 | POST | `/api/v1/auth/register` | Create an account |
 | POST | `/api/v1/auth/login` | Sign in |
 | POST | `/api/v1/auth/logout` | Sign out |
+| GET | `/api/v1/auth/session` | Check the current login session |
 | GET | `/api/v1/users/me` | Get the current user |
+| PATCH | `/api/v1/users/me` | Change the current user |
 
 ## Band Routes
 
@@ -39,6 +41,8 @@ Example error:
 | GET | `/api/v1/bands/{band_id}` | Get one band |
 | PATCH | `/api/v1/bands/{band_id}` | Change band information |
 | DELETE | `/api/v1/bands/{band_id}` | Archive a band |
+| GET | `/api/v1/bands/{band_id}/questionnaire` | Get the band questionnaire |
+| PUT | `/api/v1/bands/{band_id}/questionnaire` | Save or edit the band questionnaire |
 
 Example request:
 
@@ -58,6 +62,8 @@ Example request:
 | PATCH | `/api/v1/bands/{band_id}/members/{member_id}` | Change a member |
 | DELETE | `/api/v1/bands/{band_id}/members/{member_id}` | Remove a member |
 
+Member roles use a fixed list of 34 choices. The list includes singing, common instruments, production, writing, music direction, sound, and band management roles, plus `Other`. The account permission remains either `owner` or `member` and is not the same as the member's musical role.
+
 ## Song Routes
 
 | Method | Route | Purpose |
@@ -74,7 +80,7 @@ Example request:
 {
   "title": "Little Wing",
   "artist": "Jimi Hendrix",
-  "progress": 60,
+  "progress_level": "rehearsing",
   "status": "practising",
   "problem_notes": "The chorus entry is not together."
 }
@@ -108,7 +114,7 @@ Example request:
 | Method | Route | Purpose |
 |---|---|---|
 | GET | `/api/v1/rehearsals/{rehearsal_id}/availability` | View member availability |
-| PUT | `/api/v1/rehearsals/{rehearsal_id}/availability/me` | Update current user's availability |
+| PUT | `/api/v1/rehearsals/{rehearsal_id}/availability/{member_id}` | Update one member's availability |
 
 Example request:
 
@@ -119,7 +125,39 @@ Example request:
 }
 ```
 
-## Feedback Routes
+## Post-Rehearsal Survey Routes
+
+| Method | Route | Purpose |
+|---|---|---|
+| GET | `/api/v1/rehearsals/{rehearsal_id}/review` | Get the rehearsal survey and its song reviews |
+| PUT | `/api/v1/rehearsals/{rehearsal_id}/review` | Save or edit the full rehearsal survey |
+| GET | `/api/v1/bands/{band_id}/review-history` | List per-song survey history |
+
+Example request:
+
+```json
+{
+  "overall_rating": 4,
+  "goals_met": "partly",
+  "notes": "The full set was more stable today.",
+  "songs": [
+    {
+      "song_id": 1,
+      "performance_rating": 3,
+      "progress_level_after": "polishing",
+      "status_after": "practising",
+      "problem_type": "rhythm",
+      "note": "The chorus entry still needs work."
+    }
+  ]
+}
+```
+
+The band owner can save or edit this survey. Other band members can view it. Every selected song must belong to the rehearsal's band. Saving the survey updates the selected songs and marks the rehearsal as completed.
+
+Allowed progress values are `starting`, `learning`, `rehearsing`, `polishing`, and `ready`. The website displays these as Just starting, Learning parts, Can rehearse together, Almost finished, and Performance ready.
+
+## Other Feedback Routes
 
 | Method | Route | Purpose |
 |---|---|---|
@@ -204,7 +242,7 @@ Build the API in this order:
 2. Bands and members
 3. Songs
 4. Rehearsals and availability
-5. Feedback
+5. Post-rehearsal survey and feedback
 6. AI rehearsal plan
 7. Performances
 8. Other AI features

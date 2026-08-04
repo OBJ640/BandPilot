@@ -43,10 +43,30 @@ A band member connects a person to a band.
 | user_id | ID or empty | Related user account, if available |
 | display_name | Text | Name shown in the band |
 | role | Text | Owner or member |
-| instrument | Text | Instrument or band role |
+| instrument | Text | Musical role chosen from the fixed 34-option list |
 | joined_at | Date and time | Date added to the band |
 
 `user_id` can be empty so an owner can add a band member before that person creates an account.
+
+### Band Questionnaire
+
+A band questionnaire stores one set of setup answers for a band.
+
+| Field | Type | Description |
+|---|---|---|
+| band_id | ID | Band that owns the answers |
+| genres | Text | One to three music genres |
+| experience_level | Choice | Beginner, mixed, intermediate, or advanced |
+| main_goal | Choice | Casual playing, performances, recording, or competition |
+| rehearsal_frequency | Choice | How often the band usually rehearses |
+| session_minutes | Number | Usual rehearsal length |
+| main_challenge | Choice | The band's biggest current challenge |
+| notes | Text | Optional extra information |
+| updated_by | ID | Owner who last changed the answers |
+| completed_at | Date and time | First completion time |
+| updated_at | Date and time | Last update time |
+
+Each band has at most one questionnaire. A band's owner can edit it, while members can read the saved answers.
 
 ### Song
 
@@ -58,7 +78,7 @@ A song is a piece of music that the band is practising or performing.
 | band_id | ID | Related band |
 | title | Text | Song title |
 | artist | Text | Original artist |
-| progress | Number | Progress from 0 to 100 |
+| progress_level | Choice | Just starting, learning parts, can rehearse together, almost finished, or performance ready |
 | status | Text | Learning, practising, or ready |
 | problem_notes | Text | Parts that need more work |
 | created_at | Date and time | Date added |
@@ -93,6 +113,40 @@ A rehearsal song connects a song to a rehearsal.
 | planned_minutes | Number | Planned practice time |
 | order_number | Number | Song order in the plan |
 
+### Rehearsal Review
+
+A rehearsal review stores the overall result of one rehearsal.
+
+| Field | Type | Description |
+|---|---|---|
+| rehearsal_id | ID | Related rehearsal |
+| overall_rating | Number | Overall rating from 1 to 5 |
+| goals_met | Choice | Yes, partly, or no |
+| notes | Text | Overall rehearsal note |
+| updated_by | ID | Owner who last saved the survey |
+| completed_at | Date and time | First completion time |
+| updated_at | Date and time | Last update time |
+
+Each rehearsal has at most one overall review.
+
+### Rehearsal Song Review
+
+A rehearsal song review stores the result for one song practised in one rehearsal.
+
+| Field | Type | Description |
+|---|---|---|
+| id | ID | Review ID |
+| rehearsal_id | ID | Related rehearsal |
+| song_id | ID | Song being reviewed |
+| performance_rating | Number | Song rating from 1 to 5 |
+| progress_level_after | Choice | One of the five song progress levels after the rehearsal |
+| status_after | Choice | Learning, practising, or ready |
+| problem_type | Choice | Main problem found in the song |
+| note | Text | Short song note |
+| updated_at | Date and time | Last update time |
+
+One rehearsal can have one review for each selected song. Saving the survey also updates the song's current progress and status.
+
 ### Availability
 
 Availability records whether a member can join a rehearsal.
@@ -108,6 +162,8 @@ Availability records whether a member can join a rehearsal.
 ### Feedback
 
 Feedback records a problem or note from a rehearsal.
+
+This is for extra notes outside the completed song-by-song survey.
 
 | Field | Type | Description |
 |---|---|---|
@@ -178,8 +234,12 @@ An AI result stores AI output that the user has checked and saved.
 - One user can belong to many bands.
 - One band can have many members.
 - One band can have many songs.
+- One band can have one setup questionnaire.
 - One band can have many rehearsals.
 - One rehearsal can include many songs.
+- One rehearsal can have one overall review.
+- One rehearsal review can have many song reviews.
+- One song can have reviews from many rehearsals.
 - One rehearsal can have many availability records and feedback records.
 - One band can have many performances.
 - One performance can have many songs and checklist items.
@@ -187,9 +247,14 @@ An AI result stores AI output that the user has checked and saved.
 
 ## Data Rules
 
-- Song progress must be between 0 and 100.
+- Song progress must use one of the five named levels. Percentages are not used in the product.
 - Only band members can view a band's private data.
 - Only users with permission can change band data.
-- Removing a song should not remove old rehearsal feedback.
+- Only the band owner can save or edit a post-rehearsal survey.
+- A reviewed song must belong to the same band as the rehearsal.
+- A song can appear only once in one rehearsal survey.
+- Rehearsal and song ratings must be between 1 and 5.
+- Saving a rehearsal survey marks the rehearsal as completed.
+- Archiving a song should keep old rehearsal surveys and feedback.
 - AI output should only be saved after a user approves it.
 - Creation and update times should use one time zone format in the database.

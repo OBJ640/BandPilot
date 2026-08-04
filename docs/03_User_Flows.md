@@ -13,6 +13,7 @@ The band owner can:
 - Change band information
 - Add or remove members
 - Manage songs, rehearsals, and performances
+- Complete and edit post-rehearsal surveys
 - Use AI features
 
 ### Band Member
@@ -22,9 +23,9 @@ A band member can:
 - View band information
 - Update their availability
 - View songs and rehearsals
-- Add rehearsal feedback
+- View saved post-rehearsal surveys
 
-Role rules can stay simple in the first version. More roles can be added later.
+Account permissions stay simple: owner or member. A separate full musical-role list is used for each member's position in the band.
 
 ## Main Flow
 
@@ -32,14 +33,15 @@ The main user flow is:
 
 1. Create an account or sign in
 2. Create a band
-3. Add band members
-4. Add songs
-5. Update song progress
-6. Create a rehearsal
-7. Record member availability
-8. Choose rehearsal songs and goals
-9. Write feedback after the rehearsal
-10. Ask AI to suggest the next rehearsal plan
+3. Complete the band questionnaire
+4. Add band members
+5. Add songs
+6. Update song progress
+7. Create a rehearsal
+8. Record member availability
+9. Choose rehearsal songs and goals
+10. Review every practised song after the rehearsal
+11. Ask AI to suggest the next rehearsal plan
 
 ## Flow 1 — Create an Account
 
@@ -52,11 +54,31 @@ The user wants to start using BandPilot.
 1. The user opens the sign-up page.
 2. The user enters a name, email, and password.
 3. The app creates the account.
-4. The app opens the home page.
+4. The app signs the user in.
+5. If the user has no band yet, the app opens the first-band questionnaire.
 
 ### Result
 
-The user can create or join a band.
+The user can set up a band without signing in again.
+
+## Flow 1B — Complete the Band Questionnaire
+
+### Goal
+
+The band owner wants BandPilot to understand the band's sound and working habits.
+
+### Steps
+
+1. A new user enters the first band name and description.
+2. The owner adds their instrument or role and one to three music genres.
+3. The owner chooses the band's experience, main goal, rehearsal frequency, and usual rehearsal length.
+4. The owner chooses the band's biggest current challenge and can add a note.
+5. The app creates the first band when needed and saves the answers.
+6. The owner can reopen the questionnaire from the sidebar and edit it later.
+
+### Result
+
+The answers remain connected to the correct band and are available after the user signs out and signs in again.
 
 ## Flow 2 — Create a Band
 
@@ -85,8 +107,9 @@ The band owner wants to add the other musicians.
 
 1. The owner opens the members page.
 2. The owner selects `Add Member`.
-3. The owner enters the member's name, role, and instrument.
+3. The owner enters the member's name and chooses a musical role from the list.
 4. The owner saves the member.
+5. The owner can edit the member later or remove a member who is no longer in the band.
 
 ### Result
 
@@ -105,9 +128,10 @@ The band wants to track the songs it is practising.
 1. A user opens the songs page.
 2. The user selects `Add Song`.
 3. The user enters the song name, artist, and notes.
-4. The user sets the progress and status.
+4. The user chooses one of the five progress levels and sets the status.
 5. The user records any parts that need more practice.
 6. The user saves the song.
+7. The owner can edit the song later or archive it without removing old history.
 
 ### Result
 
@@ -127,29 +151,35 @@ The band wants to plan its next rehearsal.
 4. Members record whether they are free.
 5. The user chooses songs and goals.
 6. The user saves the rehearsal.
+7. The owner can edit or cancel a planned rehearsal.
 
 ### Result
 
 The rehearsal appears in the band's upcoming rehearsal list.
 
-## Flow 6 — Write Rehearsal Feedback
+The owner can record availability for every member. A member with a linked account can update their own answer.
+
+## Flow 6 — Complete the Post-Rehearsal Survey
 
 ### Goal
 
-The band wants to remember what happened during a rehearsal.
+The band owner wants to remember how the rehearsal and each song went.
 
 ### Steps
 
-1. A user opens a finished rehearsal.
-2. The user selects the songs that were practised.
-3. The user chooses problem types.
-4. The user writes short notes.
-5. The user updates each song's progress.
-6. The user saves the feedback.
+1. The owner opens a saved rehearsal.
+2. The owner starts the post-rehearsal survey.
+3. The owner rates the whole rehearsal and records whether its goals were met.
+4. The owner selects every song that was practised.
+5. For each song, the owner adds a rating, chooses a new progress level, and adds a new status, problem type, and short note.
+6. The owner saves the survey.
+7. The app marks the rehearsal as completed and updates the selected songs.
+8. The owner can open the survey again and edit it later.
+9. The band can open survey history and filter old song reviews by song or problem type.
 
 ### Result
 
-The feedback is saved in the rehearsal history and linked to the correct songs.
+The overall result and every song review are saved with the correct rehearsal. Band members can view the saved survey.
 
 ## Flow 7 — Create an AI Rehearsal Plan
 
@@ -160,7 +190,7 @@ The band wants help planning the next rehearsal.
 ### Steps
 
 1. A user selects `Create AI Plan`.
-2. The app collects song progress, availability, performance dates, and past feedback.
+2. The app collects song progress, availability, performance dates, and past survey results.
 3. The app sends this information to one AI model.
 4. The AI returns a suggested plan.
 5. The user checks and edits the plan.
@@ -199,7 +229,7 @@ The first version needs these pages:
 - Members
 - Songs
 - Rehearsals
-- Rehearsal details and feedback
+- Rehearsal details and song-by-song survey
 - Performances
 - AI plan review
 - Settings
