@@ -10,14 +10,14 @@ The goal is to finish one useful part at a time. Each stage should work before t
 
 ### Work
 
-- [ ] Create `frontend` and `backend` folders
-- [ ] Set up Vue 3 and TypeScript
-- [ ] Set up FastAPI
-- [ ] Set up SQLite
-- [ ] Add a `.gitignore` file
-- [ ] Add environment variable examples
+- [x] Create `public` and `backend` folders
+- [x] Set up the HTML, CSS, and JavaScript frontend
+- [x] Set up the PHP backend and API router
+- [x] Set up SQLite
+- [x] Add a `.gitignore` file
+- [x] Add environment variable examples
 - [ ] Add basic frontend and backend tests
-- [ ] Write setup steps in `README.md`
+- [x] Write setup steps in `README.md`
 
 ### Ready When
 

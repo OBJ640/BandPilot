@@ -8,25 +8,26 @@ This document explains how the main parts of BandPilot will work together.
 
 ### Frontend
 
-- Vue 3
-- TypeScript
+- HTML
+- CSS
+- JavaScript
 - A responsive design for computers and phones
 
-The frontend shows pages, forms, lists, and AI results to the user.
+The frontend uses normal web files without a frontend framework. It shows pages, forms, lists, and AI results to the user.
 
 ### Backend
 
-- Python
-- FastAPI
+- PHP
+- A simple PHP API router
 
 The backend checks user requests, reads and saves data, and calls the AI service.
 
 ### Database
 
 - SQLite during early development
-- PostgreSQL when the app is ready for online use
+- MySQL or PostgreSQL when the app is ready for online use
 
-SQLite is simple for local development. PostgreSQL is better when many users use the app online.
+SQLite is simple for local development. MySQL and PostgreSQL are good choices when many users use the app online.
 
 ### AI
 
@@ -42,10 +43,10 @@ The exact AI provider can be chosen later. The rest of the app should not depend
 User
   |
   v
-Vue Website
+HTML, CSS, and JavaScript Website
   |
   v
-FastAPI Backend
+PHP Backend
   |             |
   v             v
 Database      LLM API
@@ -101,28 +102,27 @@ Store the instructions used for each AI feature.
 
 ```text
 BandPilot/
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── services/
-│   │   ├── stores/
-│   │   └── types/
-│   └── tests/
+├── public/
+│   ├── index.html
+│   └── assets/
+│       ├── css/
+│       └── js/
 ├── backend/
-│   ├── app/
-│   │   ├── api/
-│   │   ├── models/
-│   │   ├── schemas/
-│   │   ├── services/
-│   │   ├── prompts/
-│   │   └── main.py
+│   ├── public/
+│   │   └── index.php
+│   ├── src/
+│   │   ├── Controllers/
+│   │   ├── Services/
+│   │   └── Support/
+│   ├── database/
+│   ├── scripts/
 │   └── tests/
 ├── docs/
+├── router.php
 └── README.md
 ```
 
-The numbered planning documents can move into `docs/` when the code is created.
+The numbered planning documents are stored in `docs/`.
 
 ## AI Input
 

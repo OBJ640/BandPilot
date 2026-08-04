@@ -157,6 +157,7 @@ Example request:
 | POST | `/api/v1/rehearsals/{rehearsal_id}/ai-plan` | Create a rehearsal plan |
 | POST | `/api/v1/rehearsals/{rehearsal_id}/ai-summary` | Summarize feedback |
 | POST | `/api/v1/performances/{performance_id}/ai-plan` | Create performance suggestions |
+| POST | `/api/v1/bands/{band_id}/ai-results` | Save an approved AI result |
 | POST | `/api/v1/ai-results/{result_id}/approve` | Approve and save an AI result |
 
 Example AI plan response:
