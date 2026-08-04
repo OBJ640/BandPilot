@@ -16,7 +16,7 @@ The goal is to finish one useful part at a time. Each stage should work before t
 - [x] Set up SQLite
 - [x] Add a `.gitignore` file
 - [x] Add environment variable examples
-- [ ] Add basic frontend and backend tests
+- [x] Add basic frontend and backend tests
 - [x] Write setup steps in `README.md`
 
 ### Ready When
